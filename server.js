@@ -1,5 +1,6 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
+const cTable = require('console.table');
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -75,7 +76,7 @@ function startProgram() {
 
 // add employees function
 
-
+let managerArray = ['Not listed']
 
 function addEmployee() {
     console.log('working')
@@ -104,6 +105,13 @@ function addEmployee() {
                 'Legal Team-Lead',
                 'Lawyer'
             ]
+        },
+        {
+            type: 'list',
+            name: 'manager name',
+            message: 'Who is their manager?',
+            choices: managerArray
+
         }]).then(answers => {
             switch (answers.title) {
                 case ('Sales Lead'):
@@ -112,6 +120,7 @@ function addEmployee() {
                         first_name: answers.first,
                         last_name: answers.last,
                         role_id: 1
+
                     })
                     break;
                 case ('Sales Person'):
@@ -163,6 +172,7 @@ function addEmployee() {
                     })
                     break;
             }
+            startProgram();
         })
 }
 //view all employees
@@ -171,7 +181,7 @@ function viewAll() {
     connection.query(query, function (err, res) {
         for (let i = 0; i < res.length; i++) {
 
-            console.log('ID:  ' + res[i].id + '  ||  First Name:' + res[i].first_name + '  ||  Last Name:  ' + res[i].last_name + '  ||  Role ID:  ' + res[i].role_id)
+            console.table([{ id: res[i].id, first_name: res[i].first_name, last_name: res[i].last_name, role_id: res[i].role_id }])
         }
     })
 }
@@ -203,4 +213,44 @@ function employeeByDept() {
                 }
             })
         })
+}
+
+// function to remove employee
+
+function removeEmployee() {
+
+    const query = 'SELECT * FROM employee';
+    connection.query(query, function (err, res) {
+        if (err) throw err;
+
+
+        inquirer
+            .prompt([{
+                type: 'list',
+                name: 'remove',
+                message: 'Which employee would you like to remove?',
+                choices: function () {
+                    const employeeArr = [];
+                    // const employeeId = [];
+                    for (let i = 0; i < res.length; i++) {
+                        employeeArr.push(res[i].first_name + ' ' + res[i].last_name + ' ' + res[i].id);
+
+                    }
+                    return (employeeArr);
+
+                }
+
+            }]).then(answers => {
+                console.log(answers)
+                let newAnswer = answers.remove.split(' ')
+                let id = newAnswer[2]
+                console.log(id)
+                connection.query('DELETE FROM employee WHERE ?',
+                    {
+                        id: id
+
+                    })
+            })
+
+    })
 }
