@@ -73,7 +73,7 @@ function startProgram() {
 
 }
 
-// view all roles function
+// add employees function
 
 
 
@@ -163,5 +163,44 @@ function addEmployee() {
                     })
                     break;
             }
+        })
+}
+//view all employees
+function viewAll() {
+    const query = 'SELECT * FROM employee';
+    connection.query(query, function (err, res) {
+        for (let i = 0; i < res.length; i++) {
+
+            console.log('ID:  ' + res[i].id + '  ||  First Name:' + res[i].first_name + '  ||  Last Name:  ' + res[i].last_name + '  ||  Role ID:  ' + res[i].role_id)
+        }
+    })
+}
+
+//view all employees by dept.
+
+function employeeByDept() {
+    inquirer
+        .prompt([
+            {
+                name: 'dept',
+                type: 'list',
+                message: 'Which dept would you like to see?',
+                choices: [
+                    'Sales',
+                    'Engineering',
+                    'Finance',
+                    'Legal'
+                ]
+            }
+        ]).then(answers => {
+            const query = 'SELECT employee.role_id, employee.first_name, employee.last_name FROM employee INNER JOIN department ON (employee.role_id = department.id) WHERE (department.name = ?)';
+            connection.query(query, [answers.dept], function (err, res) {
+                console.log('There are ' + res.length + ' employees in this dept!')
+                for (let i = 0; i < res.length; i++) {
+                    console.log(
+                        'ID:  ' + res[i].role_id + '  ||  First Name: ' + res[i].first_name + '  ||  Last Name: ' + res[i].last_name
+                    )
+                }
+            })
         })
 }
