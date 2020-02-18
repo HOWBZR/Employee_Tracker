@@ -79,101 +79,117 @@ function startProgram() {
 let managerArray = ['Not listed']
 
 function addEmployee() {
-    console.log('working')
-    inquirer
-        .prompt([{
-            type: 'input',
-            name: 'first',
-            message: 'What is their first name?'
+    const query = 'SELECT * FROM employee WHERE employee.role_id = 1';
+    connection.query(query, function (err, res) {
+        if (err) throw err;
 
-        },
-        {
-            type: 'input',
-            name: 'last',
-            message: 'What is their last name?'
-        },
-        {
-            type: 'list',
-            name: 'title',
-            message: 'What is their title?',
-            choices: [
-                'Sales Lead',
-                'Sales Person',
-                'Lead Engineer',
-                'Software Engineer',
-                'Accountant',
-                'Legal Team-Lead',
-                'Lawyer'
-            ]
-        },
-        {
-            type: 'list',
-            name: 'manager name',
-            message: 'Who is their manager?',
-            choices: managerArray
+        inquirer
+            .prompt([{
+                type: 'input',
+                name: 'first',
+                message: 'What is their first name?'
 
-        }]).then(answers => {
-            switch (answers.title) {
-                case ('Sales Lead'):
-                    connection.query(
-                        'INSERT INTO employee SET ?', {
-                        first_name: answers.first,
-                        last_name: answers.last,
-                        role_id: 1
+            },
+            {
+                type: 'input',
+                name: 'last',
+                message: 'What is their last name?'
+            },
+            {
+                type: 'list',
+                name: 'title',
+                message: 'What is their title?',
+                choices: [
+                    'Sales Lead',
+                    'Sales Person',
+                    'Lead Engineer',
+                    'Software Engineer',
+                    'Accountant',
+                    'Legal Team-Lead',
+                    'Lawyer'
+                ]
+            },
 
-                    })
-                    break;
-                case ('Sales Person'):
-                    connection.query(
-                        'INSERT INTO employee SET ?', {
-                        first_name: answers.first,
-                        last_name: answers.last,
-                        role_id: 1
-                    })
-                    break;
-                case ('Lead Engineer'):
-                    connection.query(
-                        'INSERT INTO employee SET ?', {
-                        first_name: answers.first,
-                        last_name: answers.last,
-                        role_id: 2
-                    })
-                    break;
-                case ('Software Engineer'):
-                    connection.query(
-                        'INSERT INTO employee SET ?', {
-                        first_name: answers.first,
-                        last_name: answers.last,
-                        role_id: 2
-                    })
-                    break;
-                case ('Accountant'):
-                    connection.query(
-                        'INSERT INTO employee SET ?', {
-                        first_name: answers.first,
-                        last_name: answers.last,
-                        role_id: 3
-                    })
-                    break;
-                case ('Legal Team-Lead'):
-                    connection.query(
-                        'INSERT INTO employee SET ?', {
-                        first_name: answers.first,
-                        last_name: answers.last,
-                        role_id: 4
-                    })
-                    break;
-                case ('Lawyer'):
-                    connection.query(
-                        'INSERT INTO employee SET ?', {
-                        first_name: answers.first,
-                        last_name: answers.last,
-                        role_id: 4
-                    })
-                    break;
-            }
-            startProgram();
-        })
+            {
+                type: 'list',
+                name: 'manager name',
+                message: 'Who is their manager?',
+                choices: function () {
+                    let managerArray = ['Not listed']
+                    // const employeeId = [];
+                    for (let i = 0; i < res.length; i++) {
+                        managerArray.push(res[i].first_name + ' ' + res[i].last_name + ' ' + res[i].id);
+
+                    }
+                    return (managerArray);
+
+                }
+
+            }]).then(answers => {
+                switch (answers.title) {
+                    case ('Sales Lead'):
+                        connection.query(
+                            'INSERT INTO employee SET ?', {
+                            first_name: answers.first,
+                            last_name: answers.last,
+                            role_id: 1
+
+                        })
+                        break;
+                    case ('Sales Person'):
+                        connection.query(
+                            'INSERT INTO employee SET ?', {
+                            first_name: answers.first,
+                            last_name: answers.last,
+                            role_id: 2
+                        })
+
+                        break;
+                    case ('Lead Engineer'):
+                        connection.query(
+                            'INSERT INTO employee SET ?', {
+                            first_name: answers.first,
+                            last_name: answers.last,
+                            role_id: 3
+                        })
+
+                        break;
+                    case ('Software Engineer'):
+                        connection.query(
+                            'INSERT INTO employee SET ?', {
+                            first_name: answers.first,
+                            last_name: answers.last,
+                            role_id: 4
+                        })
+                        break;
+                    case ('Accountant'):
+                        connection.query(
+                            'INSERT INTO employee SET ?', {
+                            first_name: answers.first,
+                            last_name: answers.last,
+                            role_id: 5
+                        })
+                        break;
+                    case ('Legal Team-Lead'):
+                        connection.query(
+                            'INSERT INTO employee SET ?', {
+                            first_name: answers.first,
+                            last_name: answers.last,
+                            role_id: 6
+                        })
+                        break;
+                    case ('Lawyer'):
+                        connection.query(
+                            'INSERT INTO employee SET ?', {
+                            first_name: answers.first,
+                            last_name: answers.last,
+                            role_id: 7
+                        })
+                        break;
+                }
+                startProgram();
+            })
+    })
 }
 //view all employees
 function viewAll() {
@@ -254,3 +270,13 @@ function removeEmployee() {
 
     })
 }
+
+// function managerLookUp() {
+
+//     const query = 'SELECT * FROM employee WHERE employee.role = 1 AND employee.role = 3 AND employee.role = 6 ';
+//     connection.query(query, function (err, res) {
+
+//         if (err) throw err;
+//     })
+
+// }
