@@ -379,7 +379,7 @@ function updateEmployeeRole() {
                         let id1 = newAnswer1[2]
                         connection.query('UPDATE employee SET role_id = 1 WHERE role_id = ?',
                             {
-                                id: id1
+                                role_id: id1
                             })
                         break;
                     case ('Sales Person'):
@@ -387,7 +387,7 @@ function updateEmployeeRole() {
                         let id2 = newAnswer2[2]
                         connection.query('UPDATE employee SET role_id = 2 WHERE role_id = ?',
                             {
-                                id: id2
+                                role_id: id2
                             })
 
                         break;
@@ -396,7 +396,7 @@ function updateEmployeeRole() {
                         let id3 = newAnswer3[2]
                         connection.query('UPDATE employee SET role_id = 3 WHERE role_id = ?',
                             {
-                                id: id3
+                                role_id: id3
                             })
 
                         break;
@@ -405,7 +405,7 @@ function updateEmployeeRole() {
                         let id4 = newAnswer4[2]
                         connection.query('UPDATE employee SET role_id = 4 WHERE role_id = ?',
                             {
-                                id: id4
+                                role_id: id4
                             })
                         break;
                     case ('Accountant'):
@@ -413,7 +413,7 @@ function updateEmployeeRole() {
                         let id5 = newAnswer5[2]
                         connection.query('UPDATE employee SET role_id = 5 WHERE role_id = ?',
                             {
-                                id: id5
+                                role_id: id5
                             })
                         break;
                     case ('Legal Team-Lead'):
@@ -421,7 +421,7 @@ function updateEmployeeRole() {
                         let id6 = newAnswer6[2]
                         connection.query('UPDATE employee SET role_id = 6 WHERE role_id = ?',
                             {
-                                id: id6
+                                role_id: id6
                             })
                         break;
                     case ('Lawyer'):
@@ -429,7 +429,7 @@ function updateEmployeeRole() {
                         let id7 = newAnswer7[2]
                         connection.query('UPDATE employee SET role_id = 7 WHERE role_id = ?',
                             {
-                                id: id7
+                                role_id: id7
                             })
                 }
                 startProgram()
