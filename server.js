@@ -269,7 +269,7 @@ function removeEmployee() {
                 console.log(answers)
                 let newAnswer = answers.remove.split(' ')
                 let id = newAnswer[2]
-                console.log(id)
+
                 connection.query('DELETE FROM employee WHERE ?',
                     {
                         id: id
@@ -280,7 +280,7 @@ function removeEmployee() {
 
     })
 }
-//UPDATE EMPLOYEE BY MANAGER -------------------------------------------------------------------
+//LIST EMPLOYEE BY MANAGER -----------------------------------------------------------------------------------------------------
 function employeeByManager() {
     const query = 'SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name, employee.manager_name FROM ((employee INNER JOIN role ON employee.role_id = role.id) INNER JOIN  department ON role.department_id = department.id)'
     connection.query(query, function (err, res) {
@@ -342,36 +342,97 @@ function viewAllRoles() {
 //UPDATE EMPLOYEE ROLE ---------------------------------------------------------------------------------
 
 function updateEmployeeRole() {
-    const query = 'SELECT * FROM employee';
+    const query = 'SELECT * FROM employee'
     connection.query(query, function (err, res) {
-        if (err) throw err;
         inquirer
             .prompt([{
                 type: 'list',
-                name: 'update',
-                message: 'Which employee would you like to update ?',
+                name: 'employee',
+                message: 'Which employees role would you like to update?',
                 choices: function () {
-                    const employeeArr = [];
+                    let employeeArr = []
                     for (let i = 0; i < res.length; i++) {
-                        employeeArr.push(res[i].first_name + res[i].last_name);
+                        employeeArr.push(res[i].first_name + ' ' + res[i].last_name + ' ' + res[i].role_id)
                     }
-                    return employeeArr;
+                    return employeeArr
                 }
-            },
-            {
+
+            }, {
                 type: 'list',
-                name: 'title',
-                message: 'What is their new title ?',
+                name: 'newrole',
+                message: 'What would you like their new role to be?',
                 choices: [
                     'Sales Lead',
                     'Sales Person',
                     'Lead Engineer',
                     'Software Engineer',
                     'Accountant',
-                    'Legal Team - Lead',
+                    'Legal Team-Lead',
                     'Lawyer'
+
                 ]
             }
             ]).then(answers => {
-        let newAnswers = []
+                switch (answers.newrole) {
+                    case ('Sales Lead'):
+                        let newAnswer1 = answers.employee.split(' ')
+                        let id1 = newAnswer1[2]
+                        connection.query('UPDATE employee SET role_id = 1 WHERE role_id = ?',
+                            {
+                                id: id1
+                            })
+                        break;
+                    case ('Sales Person'):
+                        let newAnswer2 = answers.employee.split(' ')
+                        let id2 = newAnswer2[2]
+                        connection.query('UPDATE employee SET role_id = 2 WHERE role_id = ?',
+                            {
+                                id: id2
+                            })
+
+                        break;
+                    case ('Lead Engineer'):
+                        let newAnswer3 = answers.employee.split(' ')
+                        let id3 = newAnswer3[2]
+                        connection.query('UPDATE employee SET role_id = 3 WHERE role_id = ?',
+                            {
+                                id: id3
+                            })
+
+                        break;
+                    case ('Software Engineer'):
+                        let newAnswer4 = answers.employee.split(' ')
+                        let id4 = newAnswer4[2]
+                        connection.query('UPDATE employee SET role_id = 4 WHERE role_id = ?',
+                            {
+                                id: id4
+                            })
+                        break;
+                    case ('Accountant'):
+                        let newAnswer5 = answers.employee.split(' ')
+                        let id5 = newAnswer5[2]
+                        connection.query('UPDATE employee SET role_id = 5 WHERE role_id = ?',
+                            {
+                                id: id5
+                            })
+                        break;
+                    case ('Legal Team-Lead'):
+                        let newAnswer6 = answers.employee.split(' ')
+                        let id6 = newAnswer6[2]
+                        connection.query('UPDATE employee SET role_id = 6 WHERE role_id = ?',
+                            {
+                                id: id6
+                            })
+                        break;
+                    case ('Lawyer'):
+                        let newAnswer7 = answers.employee.split(' ')
+                        let id7 = newAnswer7[2]
+                        connection.query('UPDATE employee SET role_id = 7 WHERE role_id = ?',
+                            {
+                                id: id7
+                            })
+                }
+                startProgram()
+            })
     })
+}
